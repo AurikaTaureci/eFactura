@@ -25,7 +25,7 @@ public class EFacturaApplication {
 
         try {
             // Load Excel file
-            FileInputStream excelFile = new FileInputStream(new File("C:/Users/Aurika/Desktop/eFactura/F3.xlsx"));
+            FileInputStream excelFile = new FileInputStream(new File("C:/Users/Aurika/Desktop/eFactura/F4.xlsx"));
             Workbook workbook = new XSSFWorkbook(excelFile);
 
             //Sheet sheet = workbook.getSheetAt(0);
@@ -34,7 +34,7 @@ public class EFacturaApplication {
 //            Invoice invoice = new Invoice();
 //            invoice.setUblVersionID("2.1");
             // Create XML file
-            FileOutputStream xmlFile = new FileOutputStream(new File("C:/Users/Aurika/Desktop/eFactura/F3.xml"));
+            FileOutputStream xmlFile = new FileOutputStream(new File("C:/Users/Aurika/Desktop/eFactura/F4.xml"));
             XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newFactory().createXMLStreamWriter(xmlFile);
             xmlStreamWriter.writeStartDocument();
 
@@ -340,6 +340,7 @@ public class EFacturaApplication {
 
                     // end </cbc:RegistrationName>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     //<cbc:CompanyLegalForm>J40/12345/1998</cbc:CompanyLegalForm>
                     int rowCompanyLegalForm =15;
@@ -353,13 +354,16 @@ public class EFacturaApplication {
 
                     // end </cbc:CompanyLegalForm>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     // end </cac:PartyLegalEntity>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
 
                     //end </cac:Party>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     // end </cac:AccountingSupplierParty>
                     xmlStreamWriter.writeEndElement();
@@ -410,7 +414,6 @@ public class EFacturaApplication {
                     xmlStreamWriter.writeStartElement("cac:PartyName");
 
                     //<cbc:Name>Buyer name</cbc:Name>
-
                     int rowCustomerPartyName =7;
                     int cellCustomerPartyName=1;
 
@@ -421,14 +424,16 @@ public class EFacturaApplication {
 
                     // end </cbc:Name>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     //end </cac:PartyName>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
 //   <cac:PostalAddress>
 //        <cbc:StreetName>BD DECEBAL NR 1 ET1</cbc:StreetName>
 //        <cbc:CityName>ARAD</cbc:CityName>
-//        <cbc:PostalZone>123456</cbc:PostalZone>
+//        <cbc:PostalZone>123456</cbc:PostalZone> --> nu l-am scris
 //        <cbc:CountrySubentity>RO-AR</cbc:CountrySubentity>
 
 //        <cac:Country>
@@ -439,6 +444,7 @@ public class EFacturaApplication {
 
                   //  <cac:PostalAddress>
                     xmlStreamWriter.writeStartElement("cac:PostalAddress");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     //<cbc:StreetName>BD DECEBAL NR 1 ET1</cbc:StreetName>
                     int rowCustomerStreetName=12;
@@ -456,12 +462,40 @@ public class EFacturaApplication {
                     //<cbc:CityName>Bucuresti</cbc:CityName>
                     int rowCustomerCityName=13;
                     Row rowCityName= rowIterator.next().getSheet().getRow(rowCustomerCityName);
-                    Cell cellCityName= rowStreetName.getCell(1);
+                    Cell cellCityName= rowCityName.getCell(1);
                     xmlStreamWriter.writeStartElement("cbc:CityName");
                     xmlStreamWriter.writeCharacters(String.valueOf(cellCityName.toString()));
 
                     // end </cbc:CityName>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // <cbc:CountrySubentity>RO-AR</cbc:CountrySubentity>
+                    xmlStreamWriter.writeStartElement("cbc:CountrySubentity");
+                    xmlStreamWriter.writeCharacters("RO-B");
+
+                    // end </cbc:CountrySubentity>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+//    <cac:Country>
+//          <cbc:IdentificationCode>RO</cbc:IdentificationCode> -->  se repeta tagul<!-- Codul tarii (BT-55)***-->
+//   </cac:Country>
+
+                    xmlStreamWriter.writeStartElement("cac:Country");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+                    xmlStreamWriter.writeStartElement("cbc:IdentificationCode");
+                    xmlStreamWriter.writeCharacters("RO");
+                    // end </cbc:IdentificationCode>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // end  </cac:Country
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+
 
                     // end  <cac:PostalAddress>
                     xmlStreamWriter.writeEndElement();
