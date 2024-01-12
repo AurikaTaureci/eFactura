@@ -698,6 +698,7 @@ public class EFacturaApplication {
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
 
+
                     //<cac:TaxSubtotal>
                     xmlStreamWriter.writeStartElement("cac:TaxSubtotal");
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
@@ -717,12 +718,70 @@ public class EFacturaApplication {
                     xmlStreamWriter.writeEndElement();
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
-                    // END <cac:TaxSubtotal>
+                    //<cbc:TaxAmount currencyID="RON">7238.06</cbc:TaxAmount> --> <!--BT-117-->
+                    int rowTaxAmountBT_117 =21;
+                    int cellTaxAmountBT_117=8;
+
+                    Row rowTaxAmountVAT_BT_117= rowIterator.next().getSheet().getRow(rowTaxAmountBT_117);
+                    Cell cellTaxAmountVAT_BT_117 = rowTaxAmountVAT_BT_117.getCell(cellTaxAmountBT_117);
+                    double doubleValueBT_117 = cellTaxAmountVAT_BT_117.getNumericCellValue();
+                    String formattedValueBT_117 = String.format("%.2f", doubleValueBT_117);
+                    xmlStreamWriter.writeStartElement("cbc:TaxAmount");
+                    xmlStreamWriter.writeAttribute("currencyID","RON");
+                    xmlStreamWriter.writeCharacters(formattedValueBT_117);
+
+                    // end </cbc:TaxAmount>
                     xmlStreamWriter.writeEndElement();
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
+                    // <cac:TaxCategory>
+                    xmlStreamWriter.writeStartElement("cac:TaxCategory");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
-                    // END <cac:TaxTotal>
+                    //<cbc:ID>S</cbc:ID> --> !--BT-118-->
+                    xmlStreamWriter.writeStartElement("cbc:ID");
+                    xmlStreamWriter.writeCharacters("S");
+                    //end </cbc:ID>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                   // <cbc:Percent>19.00</cbc:Percent>
+                    xmlStreamWriter.writeStartElement("cbc:Percent");
+                    xmlStreamWriter.writeCharacters("19.00");
+
+                    // end </cbc:Percent>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+  // <cac:TaxScheme>
+//                    <cbc:ID>VAT</cbc:ID>
+//   </cac:TaxScheme>
+
+                    // <cac:TaxScheme>
+                    xmlStreamWriter.writeStartElement("cac:TaxScheme");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //<cbc:ID>VAT</cbc:ID>
+                    xmlStreamWriter.writeStartElement("cbc:ID");
+                    xmlStreamWriter.writeCharacters("VAT");
+
+                    // END</cbc:ID>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // END</cac:TaxScheme>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // end  </cac:TaxCategory>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // END </cac:TaxSubtotal>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // END </cac:TaxTotal>
                     xmlStreamWriter.writeEndElement();
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
