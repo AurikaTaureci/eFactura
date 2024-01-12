@@ -624,7 +624,6 @@ public class EFacturaApplication {
 
                     Row rowPaymentMeansCode1= rowIterator.next().getSheet().getRow(rowPaymentMeansCode);
                     Cell cellPaymentMeansCode1 = rowPaymentMeansCode1.getCell(1);
-                    DataFormatter dataFormatterPaymentMeansCode = new DataFormatter();
                     String formattedValuePaymentMeansCode= dataFormatter.formatCellValue(cellPaymentMeansCode1);
                     xmlStreamWriter.writeStartElement("cbc:PaymentMeansCode");
                     xmlStreamWriter.writeCharacters(formattedValuePaymentMeansCode);
@@ -660,6 +659,78 @@ public class EFacturaApplication {
                     //end </cac:PaymentMeans>
                     xmlStreamWriter.writeEndElement();
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+// <cac:TaxTotal>
+//        <cbc:TaxAmount currencyID="RON">7238.06</cbc:TaxAmount>
+// <cac:TaxSubtotal>
+//            <cbc:TaxableAmount currencyID="RON">38095.05</cbc:TaxableAmount>
+//            <cbc:TaxAmount currencyID="RON">7238.06</cbc:TaxAmount>
+//         <cac:TaxCategory>
+//                <cbc:ID>S</cbc:ID>
+//                <cbc:Percent>19.00</cbc:Percent>
+//                <cac:TaxScheme>
+//                    <cbc:ID>VAT</cbc:ID>
+//                </cac:TaxScheme>
+//          </cac:TaxCategory>
+//   </cac:TaxSubtotal>
+//</cac:TaxTotal>
+
+
+                    // <cac:TaxTotal>
+                    xmlStreamWriter.writeStartElement("cac:TaxTotal");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                     //<cbc:TaxAmount currencyID="RON">7238.06</cbc:TaxAmount> --> Valoare totala TVA (BT-110)
+                    int rowTaxAmount =38;
+                    int cellTaxAmount=8;
+
+                    Row rowTaxAmountVAT= rowIterator.next().getSheet().getRow(rowTaxAmount);
+                    Cell cellTaxAmountVAT = rowTaxAmountVAT.getCell(cellTaxAmount);
+                    double doubleValue = cellTaxAmountVAT.getNumericCellValue();
+                    String formattedValue1 = String.format("%.2f", doubleValue);
+                    xmlStreamWriter.writeStartElement("cbc:TaxAmount");
+                    xmlStreamWriter.writeAttribute("currencyID","RON");
+                    xmlStreamWriter.writeCharacters(formattedValue1);
+
+                    // end </cbc:TaxAmount>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+                    //<cac:TaxSubtotal>
+                    xmlStreamWriter.writeStartElement("cac:TaxSubtotal");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                     //<cbc:TaxableAmount currencyID="RON">38095.05</cbc:TaxableAmount> <!--BT-116-->
+                    int rowTaxableAmount =21;
+                    int cellTaxableAmount=5;
+                    Row rowTaxableAmountVAT= rowIterator.next().getSheet().getRow(rowTaxableAmount);
+                    Cell cellTaxableAmountVAT = rowTaxableAmountVAT.getCell(cellTaxableAmount);
+                    double doubleValueTaxableAmountVAT = cellTaxableAmountVAT.getNumericCellValue();
+                    String formattedValueTaxableAmountVAT = String.format("%.2f", doubleValueTaxableAmountVAT);
+                    xmlStreamWriter.writeStartElement("cbc:TaxableAmount");
+                    xmlStreamWriter.writeAttribute("currencyID","RON");
+                    xmlStreamWriter.writeCharacters(formattedValueTaxableAmountVAT);
+
+                    // end </cbc:TaxableAmount>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // END <cac:TaxSubtotal>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+                    // END <cac:TaxTotal>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+
+
+
+
 
 
 //// all
