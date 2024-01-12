@@ -25,7 +25,7 @@ public class EFacturaApplication {
 
         try {
             // Load Excel file
-            FileInputStream excelFile = new FileInputStream(new File("C:/Users/Aurika/Desktop/eFactura/F4.xlsx"));
+            FileInputStream excelFile = new FileInputStream(new File("C:/Users/Aurika/Desktop/eFactura/F1.xlsx"));
             Workbook workbook = new XSSFWorkbook(excelFile);
 
             //Sheet sheet = workbook.getSheetAt(0);
@@ -34,14 +34,16 @@ public class EFacturaApplication {
 //            Invoice invoice = new Invoice();
 //            invoice.setUblVersionID("2.1");
             // Create XML file
-            FileOutputStream xmlFile = new FileOutputStream(new File("C:/Users/Aurika/Desktop/eFactura/F4.xml"));
+            FileOutputStream xmlFile = new FileOutputStream(new File("C:/Users/Aurika/Desktop/eFactura/F1.xml"));
             XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newFactory().createXMLStreamWriter(xmlFile);
-            xmlStreamWriter.writeStartDocument();
+            //xmlStreamWriter.writeStartDocument();
 
-            StringWriter outputXmlStringWriter = new StringWriter();
-            String outputXmlString = outputXmlStringWriter.toString();
-            xmlFile.write(outputXmlString.getBytes("UTF-8"));
+            xmlFile.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>".getBytes());
 
+           // StringWriter outputXmlStringWriter = new StringWriter();
+            //String outputXmlString = outputXmlStringWriter.toString();
+           // xmlFile.write(outputXmlString.getBytes("UTF-8"));
+           // xmlFile.write("encoding=\"UTF-8\">".getBytes());
 
             xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
             xmlStreamWriter.writeStartElement("Invoice");
@@ -299,6 +301,7 @@ public class EFacturaApplication {
 
                     // end </cbc:CompanyID>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
  // <cac:TaxScheme>
 //          <cbc:ID>VAT</cbc:ID>
@@ -315,9 +318,11 @@ public class EFacturaApplication {
 
                     // end </cbc:ID>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     //end  <cac:TaxScheme>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     // end <cac:PartyTaxScheme>
                     xmlStreamWriter.writeEndElement();
@@ -350,7 +355,6 @@ public class EFacturaApplication {
                     Cell cellCompanyLegal = rowCompanyLegal.getCell(cellCompanyLegalForm);
                     xmlStreamWriter.writeStartElement("cbc:CompanyLegalForm");
                     xmlStreamWriter.writeCharacters(String.valueOf(cellCompanyLegal.toString()));
-                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     // end </cbc:CompanyLegalForm>
                     xmlStreamWriter.writeEndElement();
@@ -395,8 +399,10 @@ public class EFacturaApplication {
 
                     Row rowS= rowIterator.next().getSheet().getRow(rowIdS);
                     Cell cellS= rowS.getCell(cellIdS);
+                    DataFormatter dataFormatter = new DataFormatter();
+                    String formattedValue = dataFormatter.formatCellValue(cellS);
                     xmlStreamWriter.writeStartElement("cbc:ID");
-                    xmlStreamWriter.writeCharacters(String.valueOf(cellS.toString()));
+                    xmlStreamWriter.writeCharacters(formattedValue);
 
                     //end </cbc:ID>
                     xmlStreamWriter.writeEndElement();
@@ -404,6 +410,7 @@ public class EFacturaApplication {
 
                     // end </cac:PartyIdentification>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
 
 //        <cac:PartyName>
@@ -412,6 +419,7 @@ public class EFacturaApplication {
 
                     //<cac:PartyName>
                     xmlStreamWriter.writeStartElement("cac:PartyName");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     //<cbc:Name>Buyer name</cbc:Name>
                     int rowCustomerPartyName =7;
@@ -497,17 +505,162 @@ public class EFacturaApplication {
 
 
 
-                    // end  <cac:PostalAddress>
+                    // end  </cac:PostalAddress>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
 
-                    // end <//cac:Party>
+//   <cac:PartyTaxScheme>
+//              <cbc:CompanyID>RO987456123</cbc:CompanyID>
+//        <cac:TaxScheme>
+//              <cbc:ID>VAT</cbc:ID>
+//        </cac:TaxScheme>
+//  </cac:PartyTaxScheme>
+
+
+                    //   <cac:PartyTaxScheme>
+                    xmlStreamWriter.writeStartElement("cac:PartyTaxScheme");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                     //<cbc:CompanyID>RO987456123</cbc:CompanyID>
+
+                    int rowCompanyIdS =9;
+                    int cellCompanyIdS=1;
+
+                    Row rowCompanyS= rowIterator.next().getSheet().getRow(rowCompanyIdS);
+                    Cell cellrowCompanyS = rowCompanyS.getCell(1);
+                    xmlStreamWriter.writeStartElement("cbc:CompanyID");
+                    xmlStreamWriter.writeCharacters(String.valueOf(cellrowCompanyS.toString()));
+
+                    // end </cbc:CompanyID>
                     xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
+                    // <cac:TaxScheme>
+                    xmlStreamWriter.writeStartElement("cac:TaxScheme");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //  <cbc:ID>VAT</cbc:ID>
+                    xmlStreamWriter.writeStartElement("cbc:ID");
+                    xmlStreamWriter.writeCharacters("VAT");
+
+                    // end </cbc:ID>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //end  <cac:TaxScheme>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+                    // end </cac:PartyTaxScheme>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+//<cac:PartyLegalEntity>
+//        <cbc:RegistrationName>Buyer SRL</cbc:RegistrationName>
+//        <cbc:CompanyID>J02/321/2010</cbc:CompanyID>
+//	</cac:PartyLegalEntity>
+
+
+                    //<cac:PartyLegalEntity>
+                    xmlStreamWriter.writeStartElement("cac:PartyLegalEntity");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //<cbc:RegistrationName>Buyer SRL</cbc:RegistrationName>
+                    int rowRegistrationNameBuyer =7;
+                    int cellRegistrationNameBuyer=1;
+
+                    Row rowRegistrationName= rowIterator.next().getSheet().getRow(rowRegistrationNameBuyer);
+                    Cell cellRegistrationName = rowRegistrationName.getCell(1);
+                    xmlStreamWriter.writeStartElement("cbc:RegistrationName");
+                    xmlStreamWriter.writeCharacters(String.valueOf(cellRegistrationName.toString()));
+
+                    // and </cbc:RegistrationName>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //<cbc:CompanyID>J02/321/2010</cbc:CompanyID>
+                    int rowRegistrationNameBuyerCompanyID =11;
+                    int cellRegistrationNameBuyerCompanyID=1;
+
+                    Row rowRegistrationNameC= rowIterator.next().getSheet().getRow(rowRegistrationNameBuyerCompanyID);
+                    Cell cellRegistrationNameC = rowRegistrationNameC.getCell(1);
+                    xmlStreamWriter.writeStartElement("cbc:CompanyID");
+                    xmlStreamWriter.writeCharacters(String.valueOf(cellRegistrationNameC.toString()));
+
+                    // and </cbc:CompanyID>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // and </cac:PartyLegalEntity>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    // end </cac:Party>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
 
                     // end </cac:AccountingCustomerParty>
                     xmlStreamWriter.writeEndElement();
                     xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+/* END---> CUSTOMER*/
+
+
+//<cac:PaymentMeans> <!-- BG-16 INSTRUCŢIUNI DE PLATĂ -->
+//    <cbc:PaymentMeansCode>31</cbc:PaymentMeansCode>
+//    <cac:PayeeFinancialAccount>
+//      <cbc:ID>RO80RNCB0067054355123456</cbc:ID>
+//    </cac:PayeeFinancialAccount>
+//  </cac:PaymentMeans>
+
+                    //<cac:PaymentMeans>
+                    xmlStreamWriter.writeStartElement("cac:PaymentMeans");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //<cbc:PaymentMeansCode>42</cbc:PaymentMeansCode>
+                    int rowPaymentMeansCode =43;
+                    int cellPaymentMeansCode=1;
+
+                    Row rowPaymentMeansCode1= rowIterator.next().getSheet().getRow(rowPaymentMeansCode);
+                    Cell cellPaymentMeansCode1 = rowPaymentMeansCode1.getCell(1);
+                    DataFormatter dataFormatterPaymentMeansCode = new DataFormatter();
+                    String formattedValuePaymentMeansCode= dataFormatter.formatCellValue(cellPaymentMeansCode1);
+                    xmlStreamWriter.writeStartElement("cbc:PaymentMeansCode");
+                    xmlStreamWriter.writeCharacters(formattedValuePaymentMeansCode);
+
+                    // end </cbc:PaymentMeansCode>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                // <cac:PayeeFinancialAccount>
+                    xmlStreamWriter.writeStartElement("cac:PayeeFinancialAccount");
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                // <cbc:ID>RO80RNCB0067054355123456</cbc:ID> --> IBAN (BT-84)
+                    int rowIBAN =16;
+                    int cellIBAN=5;
+
+                    Row rowPaymentMeansCodeIBAN= rowIterator.next().getSheet().getRow(rowIBAN);
+                    Cell cellPaymentMeansCodeIBAN = rowPaymentMeansCodeIBAN.getCell(5);
+                    xmlStreamWriter.writeStartElement("cbc:ID");
+                    xmlStreamWriter.writeCharacters(cellPaymentMeansCodeIBAN.toString());
+
+
+
+                    // end </cbc:ID>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+
+                // END   </cac:PayeeFinancialAccount>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
+                    //end </cac:PaymentMeans>
+                    xmlStreamWriter.writeEndElement();
+                    xmlStreamWriter.writeCharacters(System.getProperty("line.separator"));
+
 
 //// all
 
